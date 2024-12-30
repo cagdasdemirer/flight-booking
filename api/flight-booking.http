@@ -1,0 +1,62 @@
+### Find ALl Flights
+GET http://localhost:8080/api/v1/flights/all
+
+### Find Flight By ID
+GET http://localhost:8080/api/v1/flights/1
+
+### Find Flight By unknown ID
+GET http://localhost:8080/api/v1/flights/99
+
+### Create new Flight
+POST http://localhost:8080/api/v1/flights/
+Content-Type: application/json
+
+{
+  "id": 11,
+  "name": "THY-111",
+  "departure": "Istanbul",
+  "departureAt": "2024-02-27T15:00:12.49766",
+  "arrival": "Ankara",
+  "arriveAt": "2024-02-27T16:01:12.497678",
+  "economySeatCount": 100,
+  "defaultEconomyPrice": 100.0,
+  "businessSeatCount": 20,
+  "defaultBusinessPrice": 200.0
+}
+
+### Create new Flight with invalid dates (arriveAt is before departureAt)
+POST http://localhost:8080/api/v1/flights/
+Content-Type: application/json
+
+{
+  "id": 11,
+  "name": "THY-111",
+  "departure": "Istanbul",
+  "departureAt": "2024-02-27T15:00:12.49766",
+  "arrival": "Ankara",
+  "arriveAt": "2024-01-27T16:01:12.497678",
+  "economySeatCount": 100,
+  "defaultEconomyPrice": 100.0,
+  "businessSeatCount": 20,
+  "defaultBusinessPrice": 200.0
+}
+
+### Update an existing Flight
+PUT http://localhost:8080/api/v1/flights/1
+Content-Type: application/json
+
+{
+  "id": 11,
+  "name": "THY-111",
+  "departure": "Istanbul",
+  "departureAt": "2024-02-27T18:00:12.49766",
+  "arrival": "Ankara",
+  "arriveAt": "2024-02-27T19:01:12.497678",
+  "economySeatCount": 100,
+  "defaultEconomyPrice": 100.0,
+  "businessSeatCount": 20,
+  "defaultBusinessPrice": 300.0
+}
+
+### Delete a Flight
+DELETE http://localhost:8080/api/v1/flights/1

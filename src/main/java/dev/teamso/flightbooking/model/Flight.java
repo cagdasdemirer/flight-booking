@@ -74,8 +74,20 @@ public class Flight {
         return seats;
     }
 
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
+    public int totalEconomySeats() {
+        return Math.toIntExact(seats.stream().filter(seat -> seat.getType() == SeatType.ECONOMY).count());
+    }
+
+    public int availableEconomySeats() {
+        return Math.toIntExact(seats.stream().filter(seat -> seat.getType() == SeatType.ECONOMY && !seat.isPurchased()).count());
+    }
+
+    public int totalBusinessSeats() {
+        return Math.toIntExact(seats.stream().filter(seat -> seat.getType() == SeatType.BUSINESS).count());
+    }
+
+    public int availableBusinessSeats() {
+        return Math.toIntExact(seats.stream().filter(seat -> seat.getType() == SeatType.BUSINESS && !seat.isPurchased()).count());
     }
 
     @Override
