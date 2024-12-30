@@ -2,21 +2,18 @@ package dev.teamso.flightbooking.service;
 
 import dev.teamso.flightbooking.exceptions.FlightBadRequestException;
 import dev.teamso.flightbooking.exceptions.FlightNotFoundException;
-import dev.teamso.flightbooking.model.Flight;
-import dev.teamso.flightbooking.model.FlightCreateRequest;
-import dev.teamso.flightbooking.model.FlightDetailResponse;
-import dev.teamso.flightbooking.model.FlightSummaryResponse;
-import dev.teamso.flightbooking.model.FlightUpdateRequest;
-import dev.teamso.flightbooking.model.Seat;
-import dev.teamso.flightbooking.model.SeatType;
+import dev.teamso.flightbooking.model.entities.Flight;
+import dev.teamso.flightbooking.model.requests.FlightCreateRequest;
+import dev.teamso.flightbooking.model.dto.FlightDetailResponse;
+import dev.teamso.flightbooking.model.dto.FlightSummaryResponse;
+import dev.teamso.flightbooking.model.requests.FlightUpdateRequest;
+import dev.teamso.flightbooking.model.entities.Seat;
+import dev.teamso.flightbooking.model.entities.SeatType;
 import dev.teamso.flightbooking.repository.FlightRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +26,6 @@ public class FlightService {
 
     @Autowired
     private FlightRepository flightRepository;
-
-    private long flightIdCounter = 1;
 
     public Flight createFlight(FlightCreateRequest request) {
         logger.debug("Generating seats for the new flight.");

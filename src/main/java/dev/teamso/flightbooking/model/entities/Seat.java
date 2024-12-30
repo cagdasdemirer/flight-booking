@@ -1,4 +1,4 @@
-package dev.teamso.flightbooking.model;
+package dev.teamso.flightbooking.model.entities;
 
 import java.util.UUID;
 

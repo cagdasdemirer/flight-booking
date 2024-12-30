@@ -1,4 +1,4 @@
-package dev.teamso.flightbooking.model;
+package dev.teamso.flightbooking.model.dto;
 
 public class ErrorResponse {
     private String message;

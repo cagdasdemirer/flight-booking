@@ -1,10 +1,10 @@
 package dev.teamso.flightbooking.controller;
 
-import dev.teamso.flightbooking.model.Flight;
-import dev.teamso.flightbooking.model.FlightCreateRequest;
-import dev.teamso.flightbooking.model.FlightDetailResponse;
-import dev.teamso.flightbooking.model.FlightSummaryResponse;
-import dev.teamso.flightbooking.model.FlightUpdateRequest;
+import dev.teamso.flightbooking.model.entities.Flight;
+import dev.teamso.flightbooking.model.requests.FlightCreateRequest;
+import dev.teamso.flightbooking.model.dto.FlightDetailResponse;
+import dev.teamso.flightbooking.model.dto.FlightSummaryResponse;
+import dev.teamso.flightbooking.model.requests.FlightUpdateRequest;
 import dev.teamso.flightbooking.service.FlightService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

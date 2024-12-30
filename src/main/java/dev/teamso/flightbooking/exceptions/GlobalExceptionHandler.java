@@ -1,7 +1,6 @@
 package dev.teamso.flightbooking.exceptions;
 
-import dev.teamso.flightbooking.model.ErrorResponse;
-import org.springframework.http.HttpStatus;
+import dev.teamso.flightbooking.model.dto.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

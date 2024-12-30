@@ -1,11 +1,10 @@
 package dev.teamso.flightbooking.repository;
 
-import dev.teamso.flightbooking.model.Flight;
-import dev.teamso.flightbooking.model.Seat;
-import dev.teamso.flightbooking.model.SeatType;
+import dev.teamso.flightbooking.model.entities.Flight;
+import dev.teamso.flightbooking.model.entities.Seat;
+import dev.teamso.flightbooking.model.entities.SeatType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -75,5 +74,37 @@ public class FlightRepository {
     public void delete(Long id) {
         logger.debug("Deleting flight with ID: {}.", id);
         flights.remove(id);
+    }
+
+    public Seat addSeat(Long flightId, Seat seat) {
+        logger.debug("Adding seat to flight with ID: {}", flightId);
+        Flight flight = flights.get(flightId);
+        flight.getSeats().add(seat);
+        return seat;
+    }
+
+    public Seat updateSeat(Long flightId, Long seatId, Seat seat) {
+        logger.debug("Updating seat with ID: {} in flight with ID: {}", seatId, flightId);
+        Flight flight = flights.get(flightId);
+        List<Seat> seats = flight.getSeats();
+        for (int i = 0; i < seats.size(); i++) {
+            if (seats.get(i).getId().equals(seatId)) {
+                seats.set(i, seat);
+                return seat;
+            }
+        }
+        return null;
+    }
+
+    public void deleteSeat(Long flightId, Long seatId) {
+        logger.debug("Deleting seat with ID: {} from flight with ID: {}", seatId, flightId);
+        Flight flight = flights.get(flightId);
+        List<Seat> seats = flight.getSeats();
+        for (int i = 0; i < seats.size(); i++) {
+            if (seats.get(i).getId().equals(seatId)) {
+                seats.remove(i);
+                return;
+            }
+        }
     }
 }

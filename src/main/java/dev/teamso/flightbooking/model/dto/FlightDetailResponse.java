@@ -1,4 +1,7 @@
-package dev.teamso.flightbooking.model;
+package dev.teamso.flightbooking.model.dto;
+
+import dev.teamso.flightbooking.model.entities.Flight;
+import dev.teamso.flightbooking.model.entities.Seat;
 
 import java.time.LocalDateTime;
 import java.util.List;
