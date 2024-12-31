@@ -1,27 +1,55 @@
 package dev.teamso.flightbooking.model.entities;
 
-import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "seats")
 public class Seat {
-    private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "flight_id", nullable = false)
+    private Flight flight;
+    @Column(nullable = false)
+    private int seatNumber;
+    @Enumerated(EnumType.STRING)
     private SeatType type;
+    @Column(nullable = false)
     private double price;
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isPurchased;
 
-    public Seat(UUID id, SeatType type, double price) {
-        this.id = id;
+    public Seat(int seatNumber, SeatType type, double price) {
+        this.seatNumber = seatNumber;
         this.type = type;
         this.price = price;
         this.isPurchased = false;
     }
 
-    public UUID getId() {
+    public Seat() {
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
+
+    public int getSeatNumber() { return seatNumber;}
+
+    public void setSeatNumber(int seatNumber) { this.seatNumber = seatNumber;}
 
     public SeatType getType() {
         return type;
@@ -47,10 +75,20 @@ public class Seat {
         isPurchased = purchased;
     }
 
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
+
     @Override
     public String toString() {
         return "Seat{" +
                 "id=" + id +
+                ", flight_id=" + flight.getId() +
+                ", seatNumber=" + seatNumber +
                 ", type=" + type +
                 ", price=" + price +
                 ", isPurchased=" + isPurchased +

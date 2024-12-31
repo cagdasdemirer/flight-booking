@@ -1,0 +1,114 @@
+{
+"flights": [
+    {
+      "name": "Flight A",
+      "departure": "New York",
+      "departureAt": "2023-10-05T08:00:00Z",
+      "arrival": "Los Angeles",
+      "arriveAt": "2023-10-05T14:00:00Z",
+      "economySeatCount": 100,
+      "defaultEconomyPrice": 200.0,
+      "businessSeatCount": 20,
+      "defaultBusinessPrice": 600.0
+    },
+    {
+      "name": "Flight B",
+      "departure": "Los Angeles",
+      "departureAt": "2023-10-05T14:00:00Z",
+      "arrival": "New York",
+      "arriveAt": "2023-10-06T08:00:00Z",
+      "economySeatCount": 90,
+      "defaultEconomyPrice": 195.0,
+      "businessSeatCount": 15,
+      "defaultBusinessPrice": 575.0
+    },
+    {
+      "name": "Flight C",
+      "departure": "Chicago",
+      "departureAt": "2023-10-06T08:00:00Z",
+      "arrival": "San Francisco",
+      "arriveAt": "2023-10-06T14:00:00Z",
+      "economySeatCount": 75,
+      "defaultEconomyPrice": 180.0,
+      "businessSeatCount": 10,
+      "defaultBusinessPrice": 550.0
+    },
+    {
+      "name": "Flight D",
+      "departure": "San Francisco",
+      "departureAt": "2023-10-06T14:00:00Z",
+      "arrival": "Chicago",
+      "arriveAt": "2023-10-07T08:00:00Z",
+      "economySeatCount": 50,
+      "defaultEconomyPrice": 160.0,
+      "businessSeatCount": 5,
+      "defaultBusinessPrice": 490.0
+    },
+    {
+      "name": "Flight E",
+      "departure": "New York",
+      "departureAt": "2023-10-07T08:00:00Z",
+      "arrival": "Boston",
+      "arriveAt": "2023-10-07T14:00:00Z",
+      "economySeatCount": 65,
+      "defaultEconomyPrice": 190.0,
+      "businessSeatCount": 8,
+      "defaultBusinessPrice": 560.0
+    },
+    {
+      "name": "Flight F",
+      "departure": "Boston",
+      "departureAt": "2023-10-07T14:00:00Z",
+      "arrival": "New York",
+      "arriveAt": "2023-10-08T08:00:00Z",
+      "economySeatCount": 60,
+      "defaultEconomyPrice": 175.0,
+      "businessSeatCount": 7,
+      "defaultBusinessPrice": 540.0
+    },
+    {
+      "name": "Flight G",
+      "departure": "Chicago",
+      "departureAt": "2023-10-08T08:00:00Z",
+      "arrival": "Los Angeles",
+      "arriveAt": "2023-10-08T14:00:00Z",
+      "economySeatCount": 55,
+      "defaultEconomyPrice": 165.0,
+      "businessSeatCount": 9,
+      "defaultBusinessPrice": 530.0
+    },
+    {
+      "name": "Flight H",
+      "departure": "Los Angeles",
+      "departureAt": "2023-10-08T14:00:00Z",
+      "arrival": "Chicago",
+      "arriveAt": "2023-10-09T08:00:00Z",
+      "economySeatCount": 50,
+      "defaultEconomyPrice": 160.0,
+      "businessSeatCount": 4,
+      "defaultBusinessPrice": 490.0
+    },
+    {
+      "name": "Flight I",
+      "departure": "New York",
+      "departureAt": "2023-10-09T08:00:00Z",
+      "arrival": "Boston",
+      "arriveAt": "2023-10-09T14:00:00Z",
+      "economySeatCount": 65,
+      "defaultEconomyPrice": 170.0,
+      "businessSeatCount": 8,
+      "defaultBusinessPrice": 560.0
+    },
+    {
+      "name": "Flight J",
+      "departure": "Boston",
+      "departureAt": "2023-10-09T14:00:00Z",
+      "arrival": "New York",
+      "arriveAt": "2023-10-10T08:00:00Z",
+      "economySeatCount": 60,
+      "defaultEconomyPrice": 165.0,
+      "businessSeatCount": 7,
+      "defaultBusinessPrice": 540.0
+    }
+  ]
+}

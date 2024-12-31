@@ -3,21 +3,22 @@ package dev.teamso.flightbooking.service;
 import dev.teamso.flightbooking.exceptions.FlightBadRequestException;
 import dev.teamso.flightbooking.exceptions.FlightNotFoundException;
 import dev.teamso.flightbooking.model.entities.Flight;
-import dev.teamso.flightbooking.model.requests.FlightCreateRequest;
+import dev.teamso.flightbooking.model.dto.FlightCreateRequest;
 import dev.teamso.flightbooking.model.dto.FlightDetailResponse;
 import dev.teamso.flightbooking.model.dto.FlightSummaryResponse;
-import dev.teamso.flightbooking.model.requests.FlightUpdateRequest;
+import dev.teamso.flightbooking.model.dto.FlightUpdateRequest;
 import dev.teamso.flightbooking.model.entities.Seat;
 import dev.teamso.flightbooking.model.entities.SeatType;
-import dev.teamso.flightbooking.repository.FlightRepository;
+import dev.teamso.flightbooking.repository.JpaFlightRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class FlightService {
@@ -25,22 +26,22 @@ public class FlightService {
     private static final Logger logger = LoggerFactory.getLogger(FlightService.class);
 
     @Autowired
-    private FlightRepository flightRepository;
+    private JpaFlightRepository flightRepository;
 
+    @Transactional
     public Flight createFlight(FlightCreateRequest request) {
         logger.debug("Generating seats for the new flight.");
         validateFlightTimes(request);
         List<Seat> seats = new ArrayList<>();
 
-        for (int i = 0; i < request.getEconomySeatCount(); i++) {
-            seats.add(new Seat(UUID.randomUUID(), SeatType.ECONOMY, request.getDefaultEconomyPrice()));
+        for (int i = 1; i < request.getEconomySeatCount()+1; i++) {
+            seats.add(new Seat(i, SeatType.ECONOMY, request.getDefaultEconomyPrice()));
         }
-        for (int i = 0; i < request.getBusinessSeatCount(); i++) {
-            seats.add(new Seat(UUID.randomUUID(), SeatType.BUSINESS, request.getDefaultBusinessPrice()));
+        for (int i = request.getEconomySeatCount()+1; i < request.getEconomySeatCount()+1+request.getBusinessSeatCount(); i++) {
+            seats.add(new Seat(i, SeatType.BUSINESS, request.getDefaultBusinessPrice()));
         }
 
         Flight flight = new Flight(
-                request.getId(),
                 request.getName(),
                 request.getDeparture(),
                 request.getDepartureAt(),
@@ -52,13 +53,15 @@ public class FlightService {
         return flightRepository.save(flight);
     }
 
+    @Transactional
     public Flight updateFlight(Long id, FlightUpdateRequest request) {
         logger.debug("Looking for flight with ID: {} to update.", id);
-        Flight flight = flightRepository.findById(id);
-        if (flight == null) {
-            logger.error("Flight with ID: {} not found.", id);
+        Flight flight = flightRepository.findById(id).orElseGet(() -> {
+            logger.error("Flight with ID: {} not found", id);
             throw new FlightNotFoundException("Flight with id " + id + " not found.");
-        }
+        });
+
+        validateFlightTimes(request);
 
         flight.setName(request.getName());
         flight.setDeparture(request.getDeparture());
@@ -66,26 +69,25 @@ public class FlightService {
         flight.setArrival(request.getArrival());
         flight.setArriveAt(request.getArriveAt());
         logger.debug("Flight with ID: {} updated successfully.", id);
-        return flight;
+        return flightRepository.save(flight);
     }
-
+    @Transactional
     public void deleteFlight(Long id) {
         logger.debug("Checking if flight with ID: {} exists for deletion.", id);
-        if (!flightRepository.existsById(id)) {
-            logger.error("Flight with ID: {} not found for deletion.", id);
+        Flight flight = flightRepository.findById(id).orElseGet(() -> {
+            logger.error("Flight with ID: {} not found", id);
             throw new FlightNotFoundException("Flight with id " + id + " not found.");
-        }
-        flightRepository.delete(id);
+        });
+        flightRepository.delete(flight);
         logger.debug("Flight with ID: {} deleted successfully.", id);
     }
 
     public FlightDetailResponse getFlightById(Long id) {
         logger.debug("Fetching flight with ID: {}.", id);
-        Flight flight = flightRepository.findById(id);
-        if (flight == null) {
-            logger.error("Flight with ID: {} not found.", id);
+        Flight flight = flightRepository.findById(id).orElseGet(() -> {
+            logger.error("Flight with ID: {} not found", id);
             throw new FlightNotFoundException("Flight with id " + id + " not found.");
-        }
+        });
 
         logger.debug("Returning flight details for ID: {}.", id);
         return new FlightDetailResponse(flight);
@@ -103,9 +105,21 @@ public class FlightService {
         return summaries;
     }
 
-    private void validateFlightTimes(FlightCreateRequest request) {
-        if (request.getArriveAt().isBefore(request.getDepartureAt())) {
-            logger.error("Arrival time {} is before departure time {}", request.getArriveAt(), request.getDepartureAt());
+    private void validateFlightTimes(Object request) {
+        LocalDateTime departureAt = null;
+        LocalDateTime arriveAt = null;
+
+        if (request instanceof FlightCreateRequest) {
+            departureAt = ((FlightCreateRequest) request).getDepartureAt();
+            arriveAt = ((FlightCreateRequest) request).getArriveAt();
+        }
+        else if (request instanceof FlightUpdateRequest) {
+            departureAt = ((FlightUpdateRequest) request).getDepartureAt();
+            arriveAt = ((FlightUpdateRequest) request).getArriveAt();
+        }
+
+        if (departureAt != null && arriveAt != null && arriveAt.isBefore(departureAt)) {
+            logger.error("Arrival time {} is before departure time {}", arriveAt, departureAt);
             throw new FlightBadRequestException("Arrival time cannot be before departure time.");
         }
     }

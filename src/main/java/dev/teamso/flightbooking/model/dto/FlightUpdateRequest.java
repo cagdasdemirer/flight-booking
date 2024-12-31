@@ -1,12 +1,19 @@
-package dev.teamso.flightbooking.model.requests;
+package dev.teamso.flightbooking.model.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class FlightUpdateRequest {
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    @NotBlank(message = "Departure location is mandatory")
     private String departure;
+    @NotNull(message = "Departure time is mandatory")
     private LocalDateTime departureAt;
+    @NotBlank(message = "Arrival location is mandatory")
     private String arrival;
+    @NotNull(message = "Arrival time is mandatory")
     private LocalDateTime arriveAt;
 
     public FlightUpdateRequest(String name, String departure, LocalDateTime departureAt, String arrival, LocalDateTime arriveAt) {

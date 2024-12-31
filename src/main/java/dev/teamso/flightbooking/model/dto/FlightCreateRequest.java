@@ -1,21 +1,31 @@
-package dev.teamso.flightbooking.model.requests;
+package dev.teamso.flightbooking.model.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 public class FlightCreateRequest {
-    private Long id;
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    @NotBlank(message = "Departure location is mandatory")
     private String departure;
+    @NotNull(message = "Departure time is mandatory")
     private LocalDateTime departureAt;
+    @NotBlank(message = "Arrival location is mandatory")
     private String arrival;
+    @NotNull(message = "Arrival time is mandatory")
     private LocalDateTime arriveAt;
+    @Positive(message = "Economy seat count must be positive")
     private int economySeatCount;
+    @Positive(message = "Default economy price must be positive")
     private double defaultEconomyPrice;
+    @Positive(message = "Business seat count must be positive")
     private int businessSeatCount;
+    @Positive(message = "Default business price must be positive")
     private double defaultBusinessPrice;
 
-    public FlightCreateRequest(Long id, String name, String departure, LocalDateTime departureAt, String arrival, LocalDateTime arriveAt, int economySeatCount, double defaultEconomyPrice, int businessSeatCount, double defaultBusinessPrice) {
-        this.id = id;
+    public FlightCreateRequest(String name, String departure, LocalDateTime departureAt, String arrival, LocalDateTime arriveAt, int economySeatCount, double defaultEconomyPrice, int businessSeatCount, double defaultBusinessPrice) {
         this.name = name;
         this.departure = departure;
         this.departureAt = departureAt;
@@ -25,14 +35,6 @@ public class FlightCreateRequest {
         this.defaultEconomyPrice = defaultEconomyPrice;
         this.businessSeatCount = businessSeatCount;
         this.defaultBusinessPrice = defaultBusinessPrice;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

@@ -1,25 +1,49 @@
 package dev.teamso.flightbooking.model.entities;
 
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
+@Table(name = "flights")
 public class Flight {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(unique = true, nullable = false)
     private String name;
+    @Column(nullable = false)
     private String departure;
+    @Column(nullable = false)
     private LocalDateTime departureAt;
+    @Column(nullable = false)
     private String arrival;
+    @Column(nullable = false)
     private LocalDateTime arriveAt;
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Seat> seats;
 
-    public Flight(long id, String name, String departure, LocalDateTime departureAt, String arrival, LocalDateTime arriveAt, List<Seat> seats) {
-        this.id = id;
+    public Flight(String name, String departure, LocalDateTime departureAt, String arrival, LocalDateTime arriveAt, List<Seat> seats) {
         this.name = name;
         this.departure = departure;
         this.departureAt = departureAt;
         this.arrival = arrival;
         this.arriveAt = arriveAt;
         this.seats = seats;
+    }
+
+    public Flight() {
     }
 
     public long getId() {
@@ -72,6 +96,10 @@ public class Flight {
 
     public List<Seat> getSeats() {
         return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 
     public int totalEconomySeats() {

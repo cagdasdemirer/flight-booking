@@ -8,8 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,8 +34,8 @@ public class SeatController {
     }
 
     // Update Seat
-    @PostMapping("/{flightId}/{seatId}")
-    public ResponseEntity<Seat> updateSeat(@PathVariable Long flightId, @PathVariable Long seatId, @RequestBody Seat seat) {
+    @PutMapping("/{flightId}/{seatId}")
+    public ResponseEntity<Seat> updateSeat(@PathVariable Long flightId, @PathVariable int seatId, @RequestBody Seat seat) {
         logger.info("Updating seat with ID: {} in flight with ID: {}", seatId, flightId);
         Seat updatedSeat = seatService.updateSeat(flightId, seatId, seat);
         logger.info("Seat updated successfully: {}", updatedSeat);
@@ -41,8 +43,8 @@ public class SeatController {
     }
 
     // Delete Seat
-    @PostMapping("/{flightId}/{seatId}")
-    public ResponseEntity<String> deleteSeat(@PathVariable Long flightId, @PathVariable Long seatId) {
+    @DeleteMapping("/{flightId}/{seatId}")
+    public ResponseEntity<String> deleteSeat(@PathVariable Long flightId, @PathVariable int seatId) {
         logger.info("Deleting seat with ID: {} from flight with ID: {}", seatId, flightId);
         seatService.deleteSeat(flightId, seatId);
         logger.info("Seat deleted successfully.");

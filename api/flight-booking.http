@@ -12,7 +12,6 @@ POST http://localhost:8080/api/v1/flights/
 Content-Type: application/json
 
 {
-  "id": 11,
   "name": "THY-111",
   "departure": "Istanbul",
   "departureAt": "2024-02-27T15:00:12.49766",
@@ -29,7 +28,6 @@ POST http://localhost:8080/api/v1/flights/
 Content-Type: application/json
 
 {
-  "id": 11,
   "name": "THY-111",
   "departure": "Istanbul",
   "departureAt": "2024-02-27T15:00:12.49766",
@@ -46,7 +44,6 @@ PUT http://localhost:8080/api/v1/flights/1
 Content-Type: application/json
 
 {
-  "id": 11,
   "name": "THY-111",
   "departure": "Istanbul",
   "departureAt": "2024-02-27T18:00:12.49766",
@@ -60,3 +57,12 @@ Content-Type: application/json
 
 ### Delete a Flight
 DELETE http://localhost:8080/api/v1/flights/1
+
+### Add a new Seat to a Flight
+POST http://localhost:8080/api/v1/seats/1
+
+### Update an existing Seat
+PUT http://localhost:8080/api/v1/seats/1/1
+
+### Delete a Seat
+DELETE http://localhost:8080/api/v1/seats/1/1

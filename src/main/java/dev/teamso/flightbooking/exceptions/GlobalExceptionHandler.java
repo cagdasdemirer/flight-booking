@@ -14,6 +14,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, ex.getErrorCode());
     }
 
+    @ExceptionHandler(SeatNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSeatNotFoundException(SeatNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
+        return new ResponseEntity<>(errorResponse, ex.getErrorCode());
+    }
+
     @ExceptionHandler(FlightBadRequestException.class)
     public ResponseEntity<ErrorResponse> handleFlightBadRequestException(FlightBadRequestException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
