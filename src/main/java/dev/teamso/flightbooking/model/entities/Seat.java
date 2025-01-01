@@ -1,5 +1,7 @@
 package dev.teamso.flightbooking.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,6 +21,7 @@ public class Seat {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "flight_id", nullable = false)
+    @JsonIgnore
     private Flight flight;
     @Column(nullable = false)
     private int seatNumber;

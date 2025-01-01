@@ -25,4 +25,10 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
         return new ResponseEntity<>(errorResponse, ex.getErrorCode());
     }
+
+    @ExceptionHandler(FlightAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> handleFlightAlreadyExistException(FlightAlreadyExistException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
+        return new ResponseEntity<>(errorResponse, ex.getErrorCode());
+    }
 }

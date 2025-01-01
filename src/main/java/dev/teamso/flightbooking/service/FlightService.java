@@ -1,5 +1,6 @@
 package dev.teamso.flightbooking.service;
 
+import dev.teamso.flightbooking.exceptions.FlightAlreadyExistException;
 import dev.teamso.flightbooking.exceptions.FlightBadRequestException;
 import dev.teamso.flightbooking.exceptions.FlightNotFoundException;
 import dev.teamso.flightbooking.model.entities.Flight;
@@ -13,12 +14,14 @@ import dev.teamso.flightbooking.repository.JpaFlightRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FlightService {
@@ -32,14 +35,13 @@ public class FlightService {
     public Flight createFlight(FlightCreateRequest request) {
         logger.debug("Generating seats for the new flight.");
         validateFlightTimes(request);
-        List<Seat> seats = new ArrayList<>();
 
-        for (int i = 1; i < request.getEconomySeatCount()+1; i++) {
-            seats.add(new Seat(i, SeatType.ECONOMY, request.getDefaultEconomyPrice()));
+        Optional<Flight> existingFlight = flightRepository.findByName(request.getName());
+        if (existingFlight.isPresent()) {
+            throw new FlightAlreadyExistException("Flight with name " + request.getName() + " already exists.");
         }
-        for (int i = request.getEconomySeatCount()+1; i < request.getEconomySeatCount()+1+request.getBusinessSeatCount(); i++) {
-            seats.add(new Seat(i, SeatType.BUSINESS, request.getDefaultBusinessPrice()));
-        }
+
+        List<Seat> seats = new ArrayList<>();
 
         Flight flight = new Flight(
                 request.getName(),
@@ -49,6 +51,19 @@ public class FlightService {
                 request.getArriveAt(),
                 seats
         );
+
+        for (int i = 1; i < request.getEconomySeatCount()+1; i++) {
+            Seat seat = new Seat(i, SeatType.ECONOMY, request.getDefaultEconomyPrice());
+            seat.setFlight(flight);
+            seats.add(seat);
+        }
+        for (int i = request.getEconomySeatCount()+1; i < request.getEconomySeatCount()+1+request.getBusinessSeatCount(); i++) {
+            Seat seat = new Seat(i, SeatType.BUSINESS, request.getDefaultBusinessPrice());
+            seat.setFlight(flight);
+            seats.add(seat);
+        }
+
+        flight.setSeats(seats);
         logger.debug("Saving the new flight to the repository.");
         return flightRepository.save(flight);
     }
@@ -71,6 +86,7 @@ public class FlightService {
         logger.debug("Flight with ID: {} updated successfully.", id);
         return flightRepository.save(flight);
     }
+
     @Transactional
     public void deleteFlight(Long id) {
         logger.debug("Checking if flight with ID: {} exists for deletion.", id);

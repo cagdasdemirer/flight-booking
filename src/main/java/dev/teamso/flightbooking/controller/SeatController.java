@@ -1,6 +1,7 @@
 package dev.teamso.flightbooking.controller;
 
 
+import dev.teamso.flightbooking.model.dto.SeatCreateAndUpdateRequest;
 import dev.teamso.flightbooking.model.entities.Seat;
 import dev.teamso.flightbooking.service.SeatService;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class SeatController {
 
     // Add Seat
     @PostMapping("/{flightId}")
-    public ResponseEntity<Seat> addSeat(@PathVariable Long flightId, @RequestBody Seat seat) {
+    public ResponseEntity<Seat> addSeat(@PathVariable Long flightId, @RequestBody SeatCreateAndUpdateRequest seat) {
         logger.info("Adding seat to flight with ID: {}", flightId);
         Seat newSeat = seatService.addSeat(flightId, seat);
         logger.info("Seat added successfully with ID: {}", newSeat.getId());
@@ -34,19 +35,19 @@ public class SeatController {
     }
 
     // Update Seat
-    @PutMapping("/{flightId}/{seatId}")
-    public ResponseEntity<Seat> updateSeat(@PathVariable Long flightId, @PathVariable int seatId, @RequestBody Seat seat) {
-        logger.info("Updating seat with ID: {} in flight with ID: {}", seatId, flightId);
-        Seat updatedSeat = seatService.updateSeat(flightId, seatId, seat);
+    @PutMapping("/{flightId}/{seatNumber}")
+    public ResponseEntity<Seat> updateSeat(@PathVariable Long flightId, @PathVariable int seatNumber, @RequestBody SeatCreateAndUpdateRequest seat) {
+        logger.info("Updating seat with number: {} in flight with ID: {}", seatNumber, flightId);
+        Seat updatedSeat = seatService.updateSeat(flightId, seatNumber, seat);
         logger.info("Seat updated successfully: {}", updatedSeat);
         return new ResponseEntity<>(updatedSeat, HttpStatus.OK);
     }
 
     // Delete Seat
-    @DeleteMapping("/{flightId}/{seatId}")
-    public ResponseEntity<String> deleteSeat(@PathVariable Long flightId, @PathVariable int seatId) {
-        logger.info("Deleting seat with ID: {} from flight with ID: {}", seatId, flightId);
-        seatService.deleteSeat(flightId, seatId);
+    @DeleteMapping("/{flightId}/{seatNumber}")
+    public ResponseEntity<String> deleteSeat(@PathVariable Long flightId, @PathVariable int seatNumber) {
+        logger.info("Deleting seat with ID: {} from flight with ID: {}", seatNumber, flightId);
+        seatService.deleteSeat(flightId, seatNumber);
         logger.info("Seat deleted successfully.");
         return new ResponseEntity<>("Seat deleted successfully.", HttpStatus.OK);
     }

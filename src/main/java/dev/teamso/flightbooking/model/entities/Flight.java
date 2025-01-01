@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.OptionalInt;
 
 @Entity
 @Table(name = "flights")
@@ -31,7 +32,7 @@ public class Flight {
     @Column(nullable = false)
     private LocalDateTime arriveAt;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Seat> seats;
 
     public Flight(String name, String departure, LocalDateTime departureAt, String arrival, LocalDateTime arriveAt, List<Seat> seats) {
@@ -116,6 +117,12 @@ public class Flight {
 
     public int availableBusinessSeats() {
         return Math.toIntExact(seats.stream().filter(seat -> seat.getType() == SeatType.BUSINESS && !seat.isPurchased()).count());
+    }
+
+    public OptionalInt getMaxSeatNumber() {
+        return seats.stream()
+                .mapToInt(Seat::getSeatNumber)
+                .max();
     }
 
     @Override
