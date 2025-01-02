@@ -1,0 +1,43 @@
+version: '1.0'
+
+services:
+  app:
+    image: flight-booking:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flight-booking-app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/teamso
+      - SPRING_DATASOURCE_USERNAME=dummy
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    restart: always
+
+  db:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=teamso
+      - POSTGRES_USER=dummy
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+        - app-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
