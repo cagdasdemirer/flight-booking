@@ -31,4 +31,22 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
         return new ResponseEntity<>(errorResponse, ex.getErrorCode());
     }
+
+    @ExceptionHandler(SeatAlreadyPurchasedException.class)
+    public ResponseEntity<ErrorResponse> handleSeatAlreadyPurchasedException(SeatAlreadyPurchasedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
+        return new ResponseEntity<>(errorResponse, ex.getErrorCode());
+    }
+
+    @ExceptionHandler(PurchaseFailedException.class)
+    public ResponseEntity<ErrorResponse> handlePurchaseFailedException(PurchaseFailedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
+        return new ResponseEntity<>(errorResponse, ex.getErrorCode());
+    }
+
+    @ExceptionHandler(PaymentFailedException.class)
+    public ResponseEntity<ErrorResponse> handlePaymentFailedException(PaymentFailedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), ex.getErrorCode().toString());
+        return new ResponseEntity<>(errorResponse, ex.getErrorCode());
+    }
 }

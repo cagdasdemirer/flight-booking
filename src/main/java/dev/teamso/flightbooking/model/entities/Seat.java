@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "seats")
@@ -31,6 +32,8 @@ public class Seat {
     private double price;
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isPurchased;
+    @Version
+    private Long version;
 
     public Seat(int seatNumber, SeatType type, double price) {
         this.seatNumber = seatNumber;
@@ -96,5 +99,13 @@ public class Seat {
                 ", price=" + price +
                 ", isPurchased=" + isPurchased +
                 '}';
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
