@@ -6,6 +6,10 @@ import dev.teamso.flightbooking.model.dto.FlightDetailResponse;
 import dev.teamso.flightbooking.model.dto.FlightSummaryResponse;
 import dev.teamso.flightbooking.model.dto.FlightUpdateRequest;
 import dev.teamso.flightbooking.service.FlightService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/flights")
+@Tag(name = "Flight Controller", description = "Controller for managing flights")
 public class FlightController {
     private static final Logger logger = LoggerFactory.getLogger(FlightController.class);
 
@@ -32,6 +37,13 @@ public class FlightController {
 
     // Create Flight
     @PostMapping("/")
+    @Operation(summary = "Create a new flight", description = "Create a new flight by providing the flight details.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Flight created successfully."),
+            @ApiResponse(responseCode = "400", description = "Bad request."),
+            @ApiResponse(responseCode = "409", description = "Flight already exists."),
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
+    })
     public ResponseEntity<Flight> createFlight(@RequestBody FlightCreateRequest request) {
         logger.info("Creating a new flight with request: {}", request);
         Flight flight = flightService.createFlight(request);
@@ -41,6 +53,13 @@ public class FlightController {
 
     // Update Flight
     @PutMapping("/{id}")
+    @Operation(summary = "Update a flight", description = "Update a flight by providing the flight ID and details to update.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Flight updated successfully."),
+            @ApiResponse(responseCode = "400", description = "Bad request."),
+            @ApiResponse(responseCode = "404", description = "Flight not found."),
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
+    })
     public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody FlightUpdateRequest request) {
         logger.info("Updating flight with ID: {}", id);
         Flight flight = flightService.updateFlight(id, request);
@@ -50,6 +69,13 @@ public class FlightController {
 
     // Delete Flight
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a flight", description = "Delete a flight by providing the flight ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Flight deleted successfully."),
+            @ApiResponse(responseCode = "400", description = "Bad request."),
+            @ApiResponse(responseCode = "404", description = "Flight not found."),
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
+    })
     public ResponseEntity<String> deleteFlight(@PathVariable Long id) {
         logger.info("Deleting flight with ID: {}", id);
         flightService.deleteFlight(id);
@@ -59,6 +85,13 @@ public class FlightController {
 
     // Get Flight by ID
     @GetMapping("/{id}")
+    @Operation(summary = "Get flight details", description = "Get flight details by providing the flight ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Flight details retrieved successfully."),
+            @ApiResponse(responseCode = "400", description = "Bad request."),
+            @ApiResponse(responseCode = "404", description = "Flight not found."),
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
+    })
     public ResponseEntity<FlightDetailResponse> getFlightById(@PathVariable Long id) {
         logger.info("Fetching flight details for ID: {}", id);
         FlightDetailResponse response = flightService.getFlightById(id);
@@ -68,6 +101,11 @@ public class FlightController {
 
     // Get All Flights
     @GetMapping("/all")
+    @Operation(summary = "Get all flights", description = "Get all flights in summary format.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All flights retrieved successfully."),
+            @ApiResponse(responseCode = "500", description = "Internal server error."),
+    })
     public ResponseEntity<List<FlightSummaryResponse>> getAllFlights() {
         logger.info("Fetching all flights.");
         List<FlightSummaryResponse> response = flightService.getAllFlights();
