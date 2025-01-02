@@ -33,6 +33,7 @@ public class Seat {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isPurchased;
     @Version
+    @JsonIgnore
     private Long version;
 
     public Seat(int seatNumber, SeatType type, double price) {
